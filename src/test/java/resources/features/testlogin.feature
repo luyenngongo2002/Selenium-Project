@@ -3,93 +3,93 @@ Feature: Login Customer
   # Login
   Scenario: Check login successfully with select correct username
     Given user is on login page
-    And verify login page
     When click customer login button
     When select correct username
     And click on login button
     Then user is navigated to the home page
-  # Deposit
-  Scenario Outline: Verify that user Deposit successfully with input valid amount
-    Given user is on login page
-    And verify login page
-    When click customer login button
-    When select correct username
-    And click on login button
-    When click on Deposit
-    And enter valid <amount> to be deposit
-    And click on deposit button
-    Then message is displayed
-    Examples:
-      | amount |
-      | 20000 |
 
- #Negative Deposit
-  Scenario: Verify that user Deposit failed with input invalid amount (character, Number 0, Negative number)
-    Given user is on login page
-    And verify login page
-    When click customer login button
-    When select correct username
-    And click on login button
+  # Deposit
+
+  #Valid data
+  Scenario Outline: Check user Deposit
+    Given user login successfully
     When click on Deposit
-    And enter invalid mount to be deposit
+    And enter <amount> to be deposit
     And click on deposit button
-    Then message is displayed
+    Then the <message> is displayed
+    Examples:
+      | amount | message              |
+      | 20000  | Withdrawl Successful |
+
+  #Invalid data
+  Scenario Outline: Check user Deposit
+    Given user login successfully
+    When click on Deposit
+    And enter <amount> to be deposit
+    And click on deposit button
+    Then the <message> is displayed
+    Examples:
+      | amount | message                                                  |
+      | -1000  | Failed [-1000] is a negative bumber. Please enter again! |
+      | 0      | Failed [0] is a number 0. Please enter again!            |
+      | e      | Failed [e] is a character. Please enter again!           |
+      |        | Please fill out this field
 
   # Withdrawl
-  Scenario Outline: Verify that user Withdrawl successfully with input valid amount
-    Given user is on login page
-    And verify login page
-    When click customer login button
-    When select correct username
-    And click on login button
+
+  #Valid data
+  Scenario Outline: Check user Withdrawl
+    Given user login successfully
     And click on withdrawl
-    And enter valid <amount> to be withdrawl
+    And enter <amount> to be withdrawl
     And click on withdrawl button
-    Then message is displayed
+    Then the <message> is displayed
     Examples:
-      | amount |
-      | 10000 |
+      | amount | message              |
+      | 20000  | Withdrawl Successful |
 
-
-    #Negative Withdrawl
-  Scenario: Verify that user Withdrawl failed with input invalid amount (character, Number 0, Negative number)
-    Given user is on login page
-    And verify login page
-    When click customer login button
-    When select correct username
-    And click on login button
+ #Invalid data
+  Scenario Outline: Check user Withdrawl
+    Given user login successfully
     And click on withdrawl
-    And enter invalid mount to be withdrawl
+    And enter <amount> to be withdrawl
     And click on withdrawl button
-    Then message is displayed
+    Then the <message> is displayed
+    Examples:
+      | amount | message                                                  |
+      | -1000  | Failed [-1000] is a negative bumber. Please enter again! |
+      | 0      | Failed [0] is a number 0. Please enter again!            |
+      | e      | Failed [e] is a character. Please enter again!           |
+      |        | Please fill out this field                               |
+      | 999999 | You can not withdraw amount more than the balance. Please enter again! |
+
+
+
+  Scenario Outline: Verify that user Withdrawl failed if input amount to be withdrawn is more than the balance
+  Given user login successfully
+    And click on withdrawl
+    And enter <amount> to be withdrawl
+    And click on withdrawl button
+    Then the <message> is displayed
+    Examples:
+      | amount | message                                                                |
+      | 999999 | You can not withdraw amount more than the balance. Please enter again! |
 
   #Transaction
   Scenario: Verify that user can see transaction successfully
-    Given user is on login page
-    And verify login page
-    When click customer login button
-    When select correct username
-    And click on login button
+    Given user login successfully
     And click on transaction button
     Then message is displayed
 
   Scenario: Verify that user can back homepage when click on "Back" button
-    Given user is on login page
-    And verify login page
-    When click customer login button
-    When select correct username
-    And click on login button
+    Given user login successfully
     And click on transaction button
     And click on back button
     And user is navigated to the home page
     Then message is displayed
 
   Scenario: Verify that user can reset transation page when click on "Reset" button
-    Given user is on login page
-    And verify login page
-    When click customer login button
-    When select correct username
-    And click on login button
+    Given user login successfully
     And click on transaction button
     And click on reset button
     Then message is displayed
